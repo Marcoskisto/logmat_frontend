@@ -1,5 +1,17 @@
+import React, { FC, useState } from "react";
+import { View, StyleSheet } from "react-native"
+import { Text, Button, Menu, Divider, MD3Colors } from "react-native-paper";
 
-export default function Select() {
+const Select: FC<any> = () => {
+
+  const [material, setMaterial] = useState<any>();
+  const [items, setItems] = useState<any>();
+
+  const [setor, setSetor] = useState<any>({ id: null, sigla: "obrigatório..." });
+  const [visible, setVisible] = useState<any>(false);
+  const openMenu = () => setVisible(true);
+  const closeMenu = () => setVisible(false);
+
   return (
     <View style={style.selectContainer}>
       <Text>*Onde encontrou este material?</Text>
@@ -19,7 +31,7 @@ export default function Select() {
           </>
         }>
         {
-          items ? items.map((item) => {
+          items ? items.map((item: any) => {
             return (
               <>
                 <Menu.Item

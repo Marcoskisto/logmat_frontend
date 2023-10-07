@@ -1,19 +1,21 @@
-import React, { Component } from 'react';
+
+import React, { FC } from 'react';
 
 import {
-  AppRegistry,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  Linking
 } from 'react-native';
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 
-export default function ScanScreen({ navigation }) {
-  const onSuccess = (e) => {
-    navigation.navigate('Conferencia', {bmp: e.data})
+interface NavigationProps {
+  navigation: any
+}
+
+const ScanScreen: FC<NavigationProps> = ({ navigation }) => {
+  const onSuccess = (e:any) => {
+    navigation.navigate('Conferencia', { bmp: e.data })
   };
   return (
     <QRCodeScanner
@@ -35,7 +37,6 @@ const styles = StyleSheet.create({
     padding: 32,
     color: '#777',
     fontWeight: '500',
-    color: '#000'
   },
   buttonText: {
     fontSize: 21,
@@ -46,3 +47,4 @@ const styles = StyleSheet.create({
   }
 });
 
+export default ScanScreen

@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FC } from "react";
 import { ScrollView } from "react-native";
 import { StyleSheet, View, Text } from "react-native";
 
 import List from "../components/list";
 
+interface NavigationProps {
+  navigation: any
+}
 
-export default function ListaBmp() {
-
-
+const ListaBmp: FC<NavigationProps> = ({ navigation }) => {
   return (
     <View style={style.container}>
       <View style={style.list}>
@@ -44,3 +45,5 @@ const style = StyleSheet.create({
   }
 
 })
+
+export default ListaBmp;

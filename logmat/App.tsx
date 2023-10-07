@@ -22,8 +22,6 @@ import Conferencia from './screens/conferencia';
 
 const Stack = createNativeStackNavigator();
 
-// library.add(fab, faSearch, faQrcode)
-
 function App(): JSX.Element {
   return (
     <NavigationContainer>

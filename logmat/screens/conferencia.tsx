@@ -1,18 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import React, { useState, useEffect, FC } from "react";
+import { View, StyleSheet } from "react-native";
 import { Text, Button, Card, IconButton, MD3Colors, Menu, Divider } from "react-native-paper";
 
-import chairImage from '../assets/chair.jpeg';
+import chairImage from '../assets/images/chair.jpeg';
 import settings from '../settings';
 
-export default function Conferencia({ route, navigation }) {
+interface NavigationProps {
+  navigation?: any,
+  route?: any
+}
+
+const Conferencia: FC<NavigationProps> = ({ route, navigation }) => {
 
   const { bmp } = route.params;
-  const [material, setMaterial] = useState();
-  const [items, setItems] = useState();
+  const [material, setMaterial] = useState<any>();
+  const [items, setItems] = useState<any>();
 
-  const [setor, setSetor] = useState({ id: null, sigla: "obrigatório..." });
-  const [visible, setVisible] = React.useState(false);
+  const [setor, setSetor] = useState<any>({ id: null, sigla: "obrigatório..." });
+  const [visible, setVisible] = useState<any>(false);
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
 
@@ -37,7 +42,7 @@ export default function Conferencia({ route, navigation }) {
     return (
       <View style={style.container}>
         <Card style={style.card}>
-          <View sytle={style.cover}>
+          <View style={style.cover}>
             <Card.Cover source={chairImage} resizeMode={`contain`} />
             <IconButton style={style.shotButton}
               icon="camera" iconColor={MD3Colors.neutralVariant70}
@@ -85,7 +90,7 @@ export default function Conferencia({ route, navigation }) {
                 </Button>
               </>
             }>
-            {items ? items.map((item) => {
+            {items ? items.map((item: any) => {
               return (
                 <>
                   <Menu.Item 
@@ -115,7 +120,7 @@ export default function Conferencia({ route, navigation }) {
   }
 }
 
-const style = StyleSheet.create({
+const style: any = StyleSheet.create({
   container: {
     height: "100%"
   },
@@ -155,3 +160,5 @@ const style = StyleSheet.create({
     alignSelf: "flex-end",
   },
 })
+
+export default Conferencia

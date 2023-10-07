@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FC } from "react";
 import { DataTable } from 'react-native-paper';
 import settings from '../settings'
 
-export default function listaDeMateriais() {
+const ListaDeMateriais: FC<any> = () => {
 
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
@@ -30,7 +30,7 @@ export default function listaDeMateriais() {
         <DataTable.Title>Descrição</DataTable.Title>
       </DataTable.Header>
 
-      {items.map((item) => (
+      {items.map((item: any) => (
         <DataTable.Row key={item.n_bmp}>
           <DataTable.Cell style={{ flex: 0.2 }}>{item.setor.sigla}</DataTable.Cell>
           <DataTable.Cell style={{ flex: 0.3 }}>{item.n_bmp}</DataTable.Cell>
@@ -50,3 +50,5 @@ export default function listaDeMateriais() {
     </DataTable>
   );
 };
+
+export default ListaDeMateriais

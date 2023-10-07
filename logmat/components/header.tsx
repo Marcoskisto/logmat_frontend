@@ -1,13 +1,13 @@
-import React from "react";
+import React, { FC } from "react";
 import { StyleSheet, View, Text, Image, Dimensions } from "react-native";
-import logo from "../assets/fab-logo.png"
+import logo from "../assets/images/fab-logo.png"
 
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
 
-export default function Header() {
+const Header: FC<any> = () => {
     return (
         <View style={style.header}>
             <View style={style.icon_box}>
@@ -46,3 +46,5 @@ const style = StyleSheet.create({
         height: "100%",
     }
 })
+
+export default Header

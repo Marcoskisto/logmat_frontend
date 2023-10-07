@@ -1,11 +1,15 @@
-import React from "react";
+import React, { FC } from "react";
 import { StyleSheet } from "react-native";
 import { View } from "react-native";
 import Header from '../components/header';
 import Tools from '../components/tools';
 import Body from './listaBmp';
 
-export default function Home({ navigation }) {
+interface NavigationProps {
+  navigation: any
+}
+
+const Home: FC<NavigationProps> = ({ navigation }) => {
   return (
     <View style={style.container} >
       <View style={style.header}>
@@ -39,3 +43,5 @@ const style = StyleSheet.create({
     bottom: 0,
   }
 })
+
+export default Home;

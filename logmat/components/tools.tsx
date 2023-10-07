@@ -1,10 +1,10 @@
-import React from "react";
+import React, { FC } from "react";
 
 import { StyleSheet } from "react-native";
 import { View } from "react-native";
-import { FAB, Button, Text } from "react-native-paper";
+import { FAB, Text } from "react-native-paper";
 
-export default function Toolbar({ navigation }) {
+const Toolbar: FC<any> = ({ navigation }) => {
   return (
     < >
       <View style={style.bar}>
@@ -40,3 +40,5 @@ const style = StyleSheet.create({
     margin: 10
   }
 })  
+
+export default Toolbar
