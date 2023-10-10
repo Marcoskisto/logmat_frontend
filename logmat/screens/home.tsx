@@ -4,10 +4,8 @@ import { View } from "react-native";
 import Header from '../components/header';
 import Tools from '../components/tools';
 import Body from './listaBmp';
+import { NavigationProps } from "../components/utils";
 
-interface NavigationProps {
-  navigation: any
-}
 
 const Home: FC<NavigationProps> = ({ navigation }) => {
   return (

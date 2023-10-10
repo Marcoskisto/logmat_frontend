@@ -2,31 +2,40 @@ import React, { FC, useState } from "react";
 import { View, StyleSheet } from "react-native"
 import { Text, Button, Menu, Divider, MD3Colors } from "react-native-paper";
 
-const Select: FC<any> = () => {
+export interface Item {
+  key: any,
+  title: string
+}
+interface SelectProps {
+  items: Item[],
+  label: string,
+  defaultTitle: string
+  returnValue: Function,
+}
 
-  const [material, setMaterial] = useState<any>();
-  const [items, setItems] = useState<any>();
 
-  const [setor, setSetor] = useState<any>({ id: null, sigla: "obrigatório..." });
+const Select: FC<SelectProps> = ({ items, label, defaultTitle, returnValue }) => {
+
+  const [selected, select] = useState<any>({ id: null, title: defaultTitle });
   const [visible, setVisible] = useState<any>(false);
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
 
   return (
-    <View style={style.selectContainer}>
-      <Text>*Onde encontrou este material?</Text>
+    <View style={style.container}>
+      <Text style={style.selectLabel}>{label}</Text>
       <Menu
         visible={visible}
         onDismiss={closeMenu}
         anchor={
           <>
             <Button
-              labelStyle={style.selectLabel}
-              style={style.select}
+              labelStyle={style.label}
+              style={style.field}
               icon="arrow-down-drop-circle"
               onPress={openMenu}
             >
-              {setor.sigla}
+              {selected.title}
             </Button>
           </>
         }>
@@ -35,9 +44,9 @@ const Select: FC<any> = () => {
             return (
               <>
                 <Menu.Item
-                  key={item.id}
-                  title={item.sigla}
-                  onPress={() => { setSetor(item); closeMenu() }}
+                  key={item.key}
+                  title={item.title}
+                  onPress={() => { select(item); returnValue(item.key); closeMenu() }}
                 />
                 <Divider />
               </>
@@ -51,16 +60,21 @@ const Select: FC<any> = () => {
 
 
 const style = StyleSheet.create({
-  selectContainer: {
+  container: {
     alignItems: "center",
   },
-  select: {
+  selectLabel: {
+    fontWeight: "bold",
+  },
+  field: {
     width: 150,
     borderWidth: 1,
     borderRadius: 15,
     borderColor: MD3Colors.neutral70,
   },
-  selectLabel: {
+  label: {
     fontWeight: "bold",
   },
 })
+
+export default Select

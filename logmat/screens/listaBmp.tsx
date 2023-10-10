@@ -3,10 +3,8 @@ import { ScrollView } from "react-native";
 import { StyleSheet, View, Text } from "react-native";
 
 import List from "../components/list";
+import { NavigationProps } from "../components/utils";
 
-interface NavigationProps {
-  navigation: any
-}
 
 const ListaBmp: FC<NavigationProps> = ({ navigation }) => {
   return (

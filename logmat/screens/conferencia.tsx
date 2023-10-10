@@ -1,14 +1,30 @@
 import React, { useState, useEffect, FC } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text, Button, Card, IconButton, MD3Colors, Menu, Divider } from "react-native-paper";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import chairImage from '../assets/images/chair.jpeg';
 import settings from '../settings';
+import Select, { Item } from "../components/select";
+import { NavigationProps } from "../components/utils";
 
-interface NavigationProps {
-  navigation?: any,
-  route?: any
+
+interface Setor {
+  id: number,
+  sigla: string,
+  nome: string,
 }
+
+function createSetorItems(receivedItems: Setor[]): Item[] {
+  const items: Item[] = [];
+  receivedItems.forEach(receivedItem => {
+    items.push(
+      { key: receivedItem.id, title: receivedItem.sigla }
+    )
+  });
+  return items
+}
+
 
 const Conferencia: FC<NavigationProps> = ({ route, navigation }) => {
 
@@ -16,28 +32,69 @@ const Conferencia: FC<NavigationProps> = ({ route, navigation }) => {
   const [material, setMaterial] = useState<any>();
   const [items, setItems] = useState<any>();
 
-  const [setor, setSetor] = useState<any>({ id: null, sigla: "obrigatório..." });
-  const [visible, setVisible] = useState<any>(false);
-  const openMenu = () => setVisible(true);
-  const closeMenu = () => setVisible(false);
+  const [setorId, setSetorId] = useState<string | null>(null)
+  const [estadoId, setEstadoId] = useState<string | null>(null)
+
+  const estados: any = [
+    { key: "1", title: "Em Uso" },
+    { key: "2", title: "Em Manutenção" },
+    { key: "3", title: "Invervível" }
+  ]
+
+  function pushConferencia() {
+    const conferencia = {
+      localizacao: setorId,
+      material: material.id,
+      estado: estadoId,
+      conferente: 1,
+      observacao: "n/a"
+      
+    }
+
+    fetch(`${settings.BASE_URL}/conferencia/`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(conferencia),
+    });
+    navigation.navigate('Home')
+
+  }
 
 
   const urlMaterial = `${settings.BASE_URL}/material/?n_bmp=${bmp}`
   useEffect(() => {
-    fetch(urlMaterial)
+    
+    fetch(urlMaterial, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
       .then((resp) => resp.json())
+      .then(json => {console.log(json); return json})
       .then((json) => setMaterial(json.results[0]))
       .catch((error) => console.error(error))
   }, []);
 
   const urlSetor = `${settings.BASE_URL}/setor/`
   useEffect(() => {
-    fetch(urlSetor)
+    fetch(urlSetor, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
       .then((resp) => resp.json())
-      .then((json) => setItems(json.results))
+      .then((json) => json.results)
+      .then((setores) => createSetorItems(setores))
+      .then((items) => setItems(items))
       .catch((error) => console.error(error))
   }, []);
-
   if (material) {
     return (
       <View style={style.container}>
@@ -73,44 +130,31 @@ const Conferencia: FC<NavigationProps> = ({ route, navigation }) => {
             </Text>
           </Card.Content>
         </Card>
-        <View style={style.selectContainer}>
-          <Text>*Onde encontrou este material?</Text>
-          <Menu
-            visible={visible}
-            onDismiss={closeMenu}
-            anchor={
-              <>
-                <Button 
-                  labelStyle={style.selectLabel} 
-                  style={style.select}
-                  icon="arrow-down-drop-circle"
-                  onPress={openMenu}
-                >
-                  {setor.sigla}
-                </Button>
-              </>
-            }>
-            {items ? items.map((item: any) => {
-              return (
-                <>
-                  <Menu.Item 
-                    key={item.id} 
-                    title={item.sigla} 
-                    onPress={() => { setSetor(item); closeMenu() }}
-                  />
-                  <Divider />
-                </>
-              )
-            }) : null}
+        <View style={style.selects}>
 
-          </Menu>
-        </View >
+          <View style={style.select}>
+            <Select
+              items={estados}
+              label="*Estado do material:"
+              defaultTitle="estado..."
+              returnValue={(estadoId: string | null) => setEstadoId(estadoId)}
+            />
+          </View>
+          <View style={style.select}>
+            <Select
+              items={items}
+              label="*Localizado em:"
+              defaultTitle="localização..."
+              returnValue={(setorId: string | null) => setSetorId(setorId)}
+            />
+          </View>
+        </View>
         <View style={style.buttonAvancar}>
-          <Button contentStyle={{height: 50 }}
-            mode="contained" 
-            icon="check" 
-            onPress={() => console.log('Pressed')}
-            disabled={setor.id == null}
+          <Button contentStyle={{ height: 50 }}
+            mode="contained"
+            icon="check"
+            onPress={() => pushConferencia()}
+            disabled={setorId == null || estadoId == null}
           >
             Confirma
           </Button >
@@ -141,17 +185,12 @@ const style: any = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 20,
   },
-  selectContainer: {
-    alignItems: "center",
+  selects: {
+    flexDirection: "row",
+    alignSelf: "center",
   },
   select: {
-    width: 150,
-    borderWidth: 1,
-    borderRadius: 15,
-    borderColor: MD3Colors.neutral70,
-  },
-  selectLabel: {
-    fontWeight: "bold",
+    marginHorizontal: 5,
   },
   buttonAvancar: {
     position: "absolute",

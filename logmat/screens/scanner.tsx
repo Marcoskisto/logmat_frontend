@@ -8,10 +8,8 @@ import {
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
+import { NavigationProps } from '../components/utils';
 
-interface NavigationProps {
-  navigation: any
-}
 
 const ScanScreen: FC<NavigationProps> = ({ navigation }) => {
   const onSuccess = (e:any) => {
