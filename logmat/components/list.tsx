@@ -1,6 +1,7 @@
 import React, { useEffect, useState, FC } from "react";
 import { DataTable } from 'react-native-paper';
 import settings from '../settings'
+import { retrieveHttpHeader } from "./utils";
 
 const ListaDeMateriais: FC<any> = () => {
 
@@ -9,7 +10,7 @@ const ListaDeMateriais: FC<any> = () => {
 
   const url = `${settings.BASE_URL}/material/`
   useEffect(() => {
-    fetch(url)
+    fetch(url, retrieveHttpHeader('GET'))
       .then((resp) => resp.json())
       .then((json) => setItems(json.results))
       .catch((error) => console.error(error))

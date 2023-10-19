@@ -18,15 +18,16 @@ const Login: FC<NavigationProps> = ({ route, navigation }) => {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        
       },
       body: JSON.stringify({ username: username, password: password }),
     })
       .then((resp) => {
-        if(resp.ok){
+        if (resp.ok) {
           resp.json()
-          .then((json) => {AsyncStorage.setItem('token', json.token)})
-          .then(() => console.log('Login success'))
-          .then(navigation.navigate('Home'))
+            .then((json) => { AsyncStorage.setItem('token', json.token) })
+            .then(() => console.log('Login success'))
+            .then(navigation.navigate('Home'))
         }
       })
       .catch((error) => console.error(error))

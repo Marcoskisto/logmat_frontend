@@ -3,11 +3,11 @@ import { StyleSheet } from "react-native";
 import { View } from "react-native";
 import Header from '../components/header';
 import Tools from '../components/tools';
-import Body from './listaBmp';
-import { NavigationProps } from "../components/utils";
+import { NavigationProps, retrieveToken } from "../components/utils";
 
 
 const Home: FC<NavigationProps> = ({ navigation }) => {
+
   return (
     <View style={style.container} >
       <View style={style.header}>
