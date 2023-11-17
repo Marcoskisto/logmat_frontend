@@ -1,6 +1,6 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native"
-import { Text, Button, Menu, Divider, MD3Colors } from "react-native-paper";
+import { Text, Button, Menu, Divider, MD3Colors, PaperProvider } from "react-native-paper";
 
 export interface Item {
   key: any,
@@ -13,15 +13,18 @@ interface SelectProps {
   returnValue: Function,
 }
 
-
 const Select: FC<SelectProps> = ({ items, label, defaultTitle, returnValue }) => {
 
   const [selected, select] = useState<any>({ id: null, title: defaultTitle });
   const [visible, setVisible] = useState<any>(false);
+  const [options, setOptions] = useState([{ key: null, title: '' }])
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
 
+  useEffect(() => setOptions(items), [items])
+
   return (
+
     <View style={style.container}>
       <Text style={style.selectLabel}>{label}</Text>
       <Menu
@@ -40,16 +43,14 @@ const Select: FC<SelectProps> = ({ items, label, defaultTitle, returnValue }) =>
           </>
         }>
         {
-          items ? items.map((item: any) => {
+          options ? options.map((option: any) => {
             return (
-              <>
-                <Menu.Item
-                  key={item.key}
-                  title={item.title}
-                  onPress={() => { select(item); returnValue(item.key); closeMenu() }}
-                />
-                <Divider />
-              </>
+              <Menu.Item
+                style={style.menu}
+                key={option.key}
+                title={option.title}
+                onPress={() => { select(option); returnValue(option.key); closeMenu() }}
+              />
             )
           }) : null
         }
@@ -58,13 +59,15 @@ const Select: FC<SelectProps> = ({ items, label, defaultTitle, returnValue }) =>
   )
 }
 
-
 const style = StyleSheet.create({
   container: {
     alignItems: "center",
   },
   selectLabel: {
     fontWeight: "bold",
+  },
+  menu: {
+
   },
   field: {
     width: 150,

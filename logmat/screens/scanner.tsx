@@ -4,35 +4,53 @@ import React, { FC } from 'react';
 import {
   StyleSheet,
   Text,
+  View,
 } from 'react-native';
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
-import { NavigationProps } from '../components/utils';
+import { FAB } from 'react-native-paper';
 
+const ScanScreen: FC<any> = (props: any) => {
 
-const ScanScreen: FC<NavigationProps> = ({ navigation }) => {
-  const onSuccess = (e:any) => {
-    navigation.navigate('Conferencia', { bmp: e.data })
-  };
+  const onSuccess = (e: any) => props.onScan(e.data);
   return (
-    <QRCodeScanner
-      onRead={onSuccess}
-      flashMode={RNCamera.Constants.FlashMode.off}
-      topContent={
-        <Text style={styles.centerText}>
-          Aponte para uma etiqueta de BMP
-        </Text>
-      }
-    />
+    <View style={styles.scan}>
+      <QRCodeScanner
+        showMarker={true}
+        vibrate={true}
+        onRead={onSuccess}
+        flashMode={RNCamera.Constants.FlashMode.off}
+        topContent={
+          <View style={styles.topContent}>
+            <Text style={styles.centerText}>
+              Aponte para uma etiqueta de BMP
+            </Text>
+          </View>
+        }
+      />
+    <FAB 
+      onPress={() => props.onPressClose()}
+      style={styles.cancelButton} 
+      icon="close"/>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  scan: {
+    height: "100%"
+  },
+  cancelButton: {
+    position: 'absolute',
+    bottom: 15,
+    left: 15,
+  },
+  topContent: {
+    height: "100%"
+  },
   centerText: {
-    flex: 1,
     fontSize: 18,
-    padding: 32,
     color: '#777',
     fontWeight: '500',
   },

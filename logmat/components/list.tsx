@@ -17,7 +17,7 @@ const ListaDeMateriais: FC<any> = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const numberOfItemsPerPageList = [15, 30, 50];
+  const numberOfItemsPerPageList = [15];
   const [page, setPage] = React.useState(0);
   const [numberOfItemsPerPage, onItemsPerPageChange] = React.useState(numberOfItemsPerPageList[0]);
   const from = page * numberOfItemsPerPage;
