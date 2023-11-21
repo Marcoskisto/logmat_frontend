@@ -15,25 +15,25 @@ const BmpCard: FC<any> = (props) => {
       </View>
       <Card.Content>
         <Text style={style.label}>
-          BMP: <Text>{material.n_bmp}</Text>
+          BMP: <Text>{material?.n_bmp}</Text>
         </Text>
         <Text style={style.label}>
-          Descrição: <Text>{material.nomenclatura} </Text>
+          Descrição: <Text>{material?.nomenclatura} </Text>
         </Text>
         <Text style={style.label}>
-          Setor: <Text>{material.setor.sigla} - {material.setor.nome}
+          Setor: <Text>{material?.setor.sigla} - {material?.setor.nome}
           </Text>
         </Text>
         <Text style={style.label}>
-          Serial Number: <Text>{material.n_serie}
+          Serial Number: <Text>{material?.n_serie}
           </Text>
         </Text>
         <Text style={style.label}>
-          Valor líquido: <Text>R$ {material.vl_liquido}
+          Valor líquido: <Text>R$ {material?.vl_liquido}
           </Text>
         </Text>
         <Text style={style.label}>
-          Valor atualizado: <Text>R$ {material.vl_atualizado}
+          Valor atualizado: <Text>R$ {material?.vl_atualizado}
           </Text>
         </Text>
       </Card.Content>

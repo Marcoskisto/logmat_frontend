@@ -3,7 +3,7 @@ import { DataTable } from 'react-native-paper';
 import Material from "./material";
 import { ScrollView } from "react-native";
 import axios from "axios";
-import { Route } from "../../httpService";
+import { Resource } from "../../httpService";
 
 const Relacao: FC<any> = ({ tipo }) => {
   const [items, setItems] = useState<any>([]);
@@ -30,7 +30,7 @@ const Relacao: FC<any> = ({ tipo }) => {
     items.forEach((item: any) => {
       let material: any = item;
       console.log(tipo)
-      if (tipo !== Route.NAO_ENCONTRADOS) { material = item.material };
+      if (tipo !== Resource.NAO_ENCONTRADOS) { material = item.material };
       if (typeof material !== 'undefined') {
         renderedItems.push(
           <Material

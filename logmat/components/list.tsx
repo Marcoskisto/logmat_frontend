@@ -1,18 +1,17 @@
 import React, { useEffect, useState, FC } from "react";
 import { DataTable } from 'react-native-paper';
-import settings from '../settings'
-import { retrieveHttpHeader } from "./utils";
+import { Resource } from "../httpService";
+import axios from "axios";
 
 const ListaDeMateriais: FC<any> = () => {
 
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
 
-  const url = `${settings.BASE_URL}/material/`
   useEffect(() => {
-    fetch(url, retrieveHttpHeader('GET'))
-      .then((resp) => resp.json())
-      .then((json) => setItems(json.results))
+    const url = `${Resource.MATERIAL}?page=${page + 1}`
+    axios.get(url)
+      .then((resp) => setItems(resp.data.results))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   }, []);

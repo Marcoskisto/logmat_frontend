@@ -1,12 +1,13 @@
 import React, { useState, useEffect, FC } from "react";
 import { Modal, StyleSheet, View } from "react-native";
-import { Button, PaperProvider, Text } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import Select from "../../components/select";
-import settings from "../../settings";
-import { NavigationProps, createSetorItems, retrieveHttpHeader } from "../../components/utils";
+import { NavigationProps, createSetorItems, } from "../../components/utils";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Confirmacao from "./confirmacao";
 import ScanScreen from "../scanner";
+import { Resource } from "../../httpService";
+import axios from "axios";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,18 +19,12 @@ const IniciaConferencia: FC<NavigationProps> = ({ route, navigation }) => {
   const [scanner, showScanner] = useState<boolean>(false)
   const [confirmacao, showConfirmacao] = useState<boolean>(false)
 
-  const urlSetor = `${settings.BASE_URL}/setor/`
   useEffect(() => {
-    retrieveHttpHeader('GET')
-      .then((header: any) => {
-        fetch(urlSetor, header)
-          .then((resp) => resp.json())
-          .then((json) => json.results)
-          .then((setores) => createSetorItems(setores))
-          .then((items) => setItems(items))
-          .catch((error) => console.error(error))
-      })
-  }, []);
+    axios.get(Resource.SETOR)
+      .then((response: any) => response.data.results)
+      .then((setores) => createSetorItems(setores))
+      .then((items) => setItems(items))
+      .catch((error) => console.error(error))}, []);
 
   function switchModal() {
     const shift: boolean = scanner
@@ -75,7 +70,7 @@ const IniciaConferencia: FC<NavigationProps> = ({ route, navigation }) => {
 
       <Modal visible={confirmacao}>
         <Confirmacao
-          onPressClose={() => closeModals()}
+          onConfirmEnd={() => closeModals()}
           localId={setorId}
           bmp={bmp}
         />

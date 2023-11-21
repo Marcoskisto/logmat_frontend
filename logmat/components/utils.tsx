@@ -12,11 +12,6 @@ export interface Setor {
   nome: string,
 }
 
-export enum HttpMethod {
-  POST = 'POST',
-  GET = 'GET',
-}
-
 export function retrieveHttpHeader(method: string): any {
   return AsyncStorage.getItem('token')
     .then(

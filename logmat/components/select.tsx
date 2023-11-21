@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native"
-import { Text, Button, Menu, Divider, MD3Colors, PaperProvider } from "react-native-paper";
+import { Text, Button, Menu, MD3Colors, IconButton } from "react-native-paper";
 
 export interface Item {
   key: any,
@@ -9,7 +9,7 @@ export interface Item {
 interface SelectProps {
   items: Item[],
   label: string,
-  defaultTitle: string
+  defaultTitle: string,
   returnValue: Function,
 }
 
@@ -23,6 +23,22 @@ const Select: FC<SelectProps> = ({ items, label, defaultTitle, returnValue }) =>
 
   useEffect(() => setOptions(items), [items])
 
+  function getMenuItems(): any {
+    const optionsComponent: any[] = [];
+    options?.forEach(
+      (option) => {
+        optionsComponent.push(
+          <Menu.Item
+            style={style.menu}
+            key={option.key}
+            title={option.title}
+            onPress={() => { select(option); returnValue(option.key); closeMenu() }}
+          />
+        )
+      })
+    return optionsComponent
+  }
+
   return (
 
     <View style={style.container}>
@@ -31,29 +47,18 @@ const Select: FC<SelectProps> = ({ items, label, defaultTitle, returnValue }) =>
         visible={visible}
         onDismiss={closeMenu}
         anchor={
-          <>
+          <View style={style.anchor}>
+            <IconButton style={style.icon} icon="chevron-down"></IconButton>
             <Button
               labelStyle={style.label}
               style={style.field}
-              icon="arrow-down-drop-circle"
-              onPress={openMenu}
-            >
+              onPress={openMenu}>
               {selected.title}
             </Button>
-          </>
-        }>
-        {
-          options ? options.map((option: any) => {
-            return (
-              <Menu.Item
-                style={style.menu}
-                key={option.key}
-                title={option.title}
-                onPress={() => { select(option); returnValue(option.key); closeMenu() }}
-              />
-            )
-          }) : null
+          </ View>
         }
+      >
+        {getMenuItems()}
       </Menu>
     </View >
   )
@@ -65,18 +70,32 @@ const style = StyleSheet.create({
   },
   selectLabel: {
     fontWeight: "bold",
+    marginBottom: 10
   },
-  menu: {
+  anchor: {
+    flexDirection: "row"
+  },
+  icon: {
+    position: "absolute",
+    width: 180,
+    alignItems: "flex-end",
+    marginLeft: -15
+  },
 
+  menu: {
+    width: 180
   },
   field: {
-    width: 150,
-    borderWidth: 1,
-    borderRadius: 15,
+    width: 180,
+    borderWidth: 2,
+    borderRadius: 20,
     borderColor: MD3Colors.neutral70,
   },
   label: {
     fontWeight: "bold",
+    textAlign: "left",
+    textAlignVertical: "center",
+    height: 30,
   },
 })
 

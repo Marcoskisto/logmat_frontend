@@ -6,19 +6,19 @@ import settings from "../settings";
 import { NavigationProps } from "../components/utils";
 import axios from 'axios';
 import logo from '../assets/images/logo.png';
-import { Route } from '../httpService'
+import { Resource } from '../httpService'
 const Login: FC<NavigationProps> = ({ route, navigation }) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const urlLogin = `${settings.BASE_URL}/login/`
-
   async function login() {
-    axios.post(Route.LOGIN, { username: username, password: password })
+    axios.post(Resource.LOGIN, { username: username, password: password })
       .then((resp) => {
         if (resp.status == 200) {
           axios.defaults.headers.common['Authorization'] = `Token ${resp.data.token}`;
-          navigation.navigate('Home')
+          AsyncStorage.setItem('user', resp.data.user);
+          AsyncStorage.setItem('setor', resp.data.setor);
+          navigation.navigate('Home');
         }
       })
       .catch((error) => console.error(error))
