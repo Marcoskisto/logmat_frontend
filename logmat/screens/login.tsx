@@ -1,12 +1,13 @@
 import React, { FC, useEffect, useState, } from "react";
 import { Image, StyleSheet, View } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput, Button } from "react-native-paper";
-import settings from "../settings";
 import { NavigationProps } from "../components/utils";
 import axios from 'axios';
 import logo from '../assets/images/logo.png';
 import { Resource } from '../httpService'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+
 const Login: FC<NavigationProps> = ({ route, navigation }) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -16,8 +17,8 @@ const Login: FC<NavigationProps> = ({ route, navigation }) => {
       .then((resp) => {
         if (resp.status == 200) {
           axios.defaults.headers.common['Authorization'] = `Token ${resp.data.token}`;
-          AsyncStorage.setItem('user', resp.data.user);
-          AsyncStorage.setItem('setor', resp.data.setor);
+          AsyncStorage.setItem('session', JSON.stringify(resp.data));
+          AsyncStorage.setItem('setorSigla', JSON.stringify(resp.data.setor.sigla));
           navigation.navigate('Home');
         }
       })

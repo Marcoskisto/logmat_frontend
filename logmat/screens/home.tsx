@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { View } from "react-native";
 import Header from '../components/header';
 import Tools from '../components/tools';
-import { NavigationProps, retrieveToken } from "../components/utils";
+import { NavigationProps } from "../components/utils";
 
 
 const Home: FC<NavigationProps> = ({ navigation }) => {
@@ -37,8 +37,6 @@ const style = StyleSheet.create({
 
   tools: {
     width: "100%",
-    position: "absolute",
-    bottom: 0,
   }
 })
 

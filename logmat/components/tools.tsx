@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, Touchable } from "react-native";
 import { View } from "react-native";
-import { FAB, Text } from "react-native-paper";
+import { Avatar, Button, Card, FAB, IconButton, Text, TouchableRipple } from "react-native-paper";
 import { green100 } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 const Toolbar: FC<any> = ({ navigation }) => {
@@ -10,43 +10,54 @@ const Toolbar: FC<any> = ({ navigation }) => {
     < >
       <View style={style.bar}>
         <View style={style.fab}>
-          <FAB icon="clipboard-list-outline" 
-               size="large" 
-               mode="flat"
-               onPress={() => navigation.navigate('ListaBmp')} />
+          <FAB icon="clipboard-list-outline"
+            size="large"
+            mode="flat"
+            onPress={() => navigation.navigate('ListaBmp')} />
           <Text>Listar</Text>
         </View>
         <View style={style.fab}>
-          <FAB icon="qrcode-scan"
-               size="large"
-               mode="flat"
-               variant="primary"
-               onPress={() => navigation.navigate('Conferencia')} />
+          <FAB icon="format-list-checks"
+            size="large"
+            mode="flat"
+            onPress={() => navigation.navigate('Conferencia')} />
           <Text>Conferir</Text>
         </View>
         <View style={style.fab}>
-          <FAB icon="format-list-checks" 
-               size="large" 
-               mode="flat"
-               onPress={() => navigation.navigate('Relatorios')} />
+          <FAB icon="format-list-checks"
+            size="large"
+            mode="flat"
+            onPress={() => navigation.navigate('Relatorios')} />
           <Text>Acompanhar</Text>
         </View>
-      </View>
+        <View >
+          <TouchableRipple
+            onPress={() => console.log('Pressed')}
+            rippleColor="rgba(0, 0, 0, .32)"
+          >
+            <Card.Title title="Card Title" subtitle="Card Subtitle" />
+
+          </TouchableRipple >
+        </View>
+
+      </View >
     </ >
   )
 }
 
 const style = StyleSheet.create({
   bar: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+  },
+  option: {
+    borderRadius: 20,
+    margin: 10,
+    height: 100,
+    backgroundColor: '#aaaabb'
 
   },
   fab: {
-    alignItems: "center",
     margin: 10,
   }
-})  
+})
 
 export default Toolbar

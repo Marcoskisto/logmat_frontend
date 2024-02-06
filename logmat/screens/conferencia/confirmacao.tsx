@@ -1,14 +1,14 @@
 import React, { useState, useEffect, FC } from "react";
 import axios from "axios";
 import { Resource } from "../../httpService";
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert, ScrollView } from "react-native";
 import { FAB, PaperProvider, Text } from "react-native-paper";
 import Select, { Item } from "../../components/select";
 import BmpCard from "./bmpCard";
 
 const Confirmacao: FC<any> = (props) => {
   const [material, setMaterial] = useState<any>();
-  
+
   const [setorId] = useState(props.localId)
   const [estadoId, setEstadoId] = useState<string | null>(null)
 
@@ -25,7 +25,7 @@ const Confirmacao: FC<any> = (props) => {
       estado: estadoId,
       observacao: "n/a"
     }
-  
+
     axios.post(Resource.CONFERENCIA, conferencia)
       .then(
         (response) => {
@@ -49,31 +49,38 @@ const Confirmacao: FC<any> = (props) => {
       .then((material) => updateMaterial(material))
       .catch((error) => console.error(error))
   }, []);
+
   return (
     <PaperProvider>
-      <View style={style.container}>
-        <BmpCard material={material} key={material?.id}/>
-        <Select
-          
-          items={estados}
-          label="*Estado do material:"
-          defaultTitle="estado..."
-          returnValue={(estadoId: string | null) => setEstadoId(estadoId)}
-        />
-        
-        <FAB
-          style={style.cancelButton}
-          icon="close"
-          onPress={() => { props.onConfirmEnd() }}
-        />
-        <FAB
-          style={style.buttonAvancar}
-          icon="check"
-          label="Confirma"
-          onPress={() => pushConferencia()}
-          disabled={setorId == null || estadoId == null}
-        />
-      </View >
+
+      <ScrollView style={style.container}>
+        <BmpCard material={material} key={material?.id} />
+        <View style={style.selectEstado}>
+          <Select
+            items={estados}
+            label="*Estado do material:"
+            defaultTitle="estado..."
+            returnValue={(estadoId: string | null) => setEstadoId(estadoId)}
+          />
+        </View>
+        <View style={style.bottonBar}>
+          <FAB
+            style={style.cancelButton}
+            icon="close"
+            label=""
+            mode="flat"
+            onPress={() => { props.onConfirmEnd() }}
+          />
+          <FAB
+            style={style.buttonAvancar}
+            icon="check"
+            label="CONFIRMA"
+            mode="flat"
+            onPress={() => pushConferencia()}
+            disabled={setorId == null || estadoId == null}
+          />
+        </View>
+      </ScrollView >
     </PaperProvider>
   )
 }
@@ -85,16 +92,21 @@ const style: any = StyleSheet.create({
   coverContainer: {
     display: "flex"
   },
+  selectEstado: {
+  },
+  bottonBar: {
+    marginTop: 30,
+    marginHorizontal: 20,
+    marginBottom: 10,
+    flexDirection: "row"
+  },
   buttonAvancar: {
     position: "absolute",
-    bottom: 15,
-    right: 15,
+    right: 0,
     alignSelf: "flex-end",
   },
   cancelButton: {
-    position: 'absolute',
-    bottom: 15,
-    left: 15,
+    alignSelf: "flex-start"
   },
 })
 

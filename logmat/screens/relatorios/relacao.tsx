@@ -4,6 +4,7 @@ import Material from "./material";
 import { ScrollView } from "react-native";
 import axios from "axios";
 import { Resource } from "../../httpService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Relacao: FC<any> = ({ tipo }) => {
   const [items, setItems] = useState<any>([]);
@@ -12,24 +13,34 @@ const Relacao: FC<any> = ({ tipo }) => {
   const [numberOfPages, setNumberOfPages] = useState(0)
   const numberOfItemsPerPageList = [15];
   const [numberOfItemsPerPage, onItemsPerPageChange] = React.useState(numberOfItemsPerPageList[0]);
+  const [setor, setSetor] = useState();
+
+  const retrieveSetor = async () => {
+    const result = await AsyncStorage.getItem('session')
+    const session = JSON.parse(result!)
+    return session.setor.sigla
+  }
 
   useEffect(() => {
-    const url = `${tipo}?page=${page + 1}`
-    axios.get(url)
-      .then((resp) => resp.data)
-      .then((data) => {
-        setLength(data.count);
-        setItems(renderItems(data.results));
-        setNumberOfPages(Math.ceil(data.count / numberOfItemsPerPage));
-      })
-      .catch((error) => console.error(error))
+    retrieveSetor()
+      .then(
+        setor => {
+          const params = { page: page + 1, setor: setor }
+          axios.get(tipo, { params })
+            .then((resp) => resp.data)
+            .then((data) => {
+              setLength(data.count);
+              setItems(renderItems(data.results));
+              setNumberOfPages(Math.ceil(data.count / numberOfItemsPerPage));
+            })
+            .catch((error) => console.error(error))
+        })
   }, [page]);
 
   function renderItems(items: []): any[] {
     const renderedItems: any[] = [];
     items.forEach((item: any) => {
       let material: any = item;
-      console.log(tipo)
       if (tipo !== Resource.NAO_ENCONTRADOS) { material = item.material };
       if (typeof material !== 'undefined') {
         renderedItems.push(
