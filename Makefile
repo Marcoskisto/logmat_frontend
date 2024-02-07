@@ -1,5 +1,5 @@
-start:
-	npx ./logmat/react-native start
+metro:
+	npm start
 	
-device: 
-	npx react-native run-android
+run: metro
+	npm run android
