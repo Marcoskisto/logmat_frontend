@@ -1,5 +1,9 @@
-metro:
+before-first-run:
+	npm install
+	keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000
+
+run:
 	npm start
 	
-run: metro
+android:
 	npm run android
