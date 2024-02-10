@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 import { StyleSheet } from "react-native";
 import { View } from "react-native";
-import Header from '../components/header';
-import Tools from '../components/tools';
-import { NavigationProps } from "../components/utils";
+import Header from '../../components/header';
+import Panel from './Panel';
+import { NavigationProps } from "../../components/utils";
 
 
 const Home: FC<NavigationProps> = ({ navigation }) => {
@@ -14,7 +14,7 @@ const Home: FC<NavigationProps> = ({ navigation }) => {
         <Header />
       </View>
       <View style={style.tools} >
-        <Tools navigation={navigation} />
+        <Panel navigation={navigation} />
       </View>
     </View >
   )

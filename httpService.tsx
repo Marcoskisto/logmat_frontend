@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-
 export enum Resource {
   LOGIN = '/login/',
   MATERIAL = '/material/',
@@ -11,7 +10,7 @@ export enum Resource {
   SETOR = '/setor/'
 }
 
-axios.defaults.baseURL = 'http://192.168.15.18:8000';
+axios.defaults.baseURL = 'http://192.168.15.62:8000';
 axios.defaults.timeout = 500;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.common.Accept = 'application/json'

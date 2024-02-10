@@ -16,7 +16,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Login from './screens/login'
-import Home from './screens/home';
+import Home from './screens/Home';
 import ScanScreen from './screens/scanner';
 import ListaBmp from './screens/listaBmp';
 import Relatorios from './screens/relatorios';
