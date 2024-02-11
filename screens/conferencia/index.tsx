@@ -15,6 +15,7 @@ const IniciaConferencia: FC<NavigationProps> = ({ route, navigation }) => {
 
   const [items, setItems] = useState<any>();
   const [setorId, setSetorId] = useState<string | null>(null)
+  const [setor, setSetor] = useState<any>(null)
   const [bmp, setBmp] = useState<string | null>(null)
   const [scanner, showScanner] = useState<boolean>(false)
   const [confirmacao, showConfirmacao] = useState<boolean>(false)
@@ -23,7 +24,7 @@ const IniciaConferencia: FC<NavigationProps> = ({ route, navigation }) => {
     axios.get(Resource.SETOR)
       .then((response: any) => response.data.results)
       .then((setores) => createSetorItems(setores))
-      .then((items) => setItems(items))
+      .then((items) => {setItems(items); console.log(items)})
       .catch((error) => console.error(error))}, []);
 
   function switchModal() {
@@ -48,9 +49,8 @@ const IniciaConferencia: FC<NavigationProps> = ({ route, navigation }) => {
         <Text style={style.title}>Em que local você está?</Text>
         <Select
           items={items}
-          label="Localização física dos materiais?"
-          defaultTitle="localização..."
-          returnValue={(setorId: string | null) => setSetorId(setorId)}
+          label="localização..."
+          onSelect={(setorId: string | null) => setSetorId(setorId)}
         />
         <Button contentStyle={{ height: 50 }}
           style={style.buttonContinua}

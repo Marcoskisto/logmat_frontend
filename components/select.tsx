@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native"
-import { Text, Button, Menu, MD3Colors, IconButton } from "react-native-paper";
+import { View, StyleSheet, Modal, Pressable, SectionList, FlatList, ScrollView } from "react-native"
+import { Text, Button, Menu, MD3Colors, Icon } from "react-native-paper";
 
 export interface Item {
   key: any,
@@ -9,94 +9,102 @@ export interface Item {
 interface SelectProps {
   items: Item[],
   label: string,
-  defaultTitle: string,
-  returnValue: Function,
+  onSelect: Function,
 }
+type ItemProps = { title: string, onPress: Function };
 
-const Select: FC<SelectProps> = ({ items, label, defaultTitle, returnValue }) => {
+const Item = ({ title, onPress }: ItemProps) => (
+  <Pressable style={style.item} onPress={() => { onPress()}} >
+    <Text style={style.label}>{title}</Text>
+  </Pressable>
+);
 
-  const [selected, select] = useState<any>({ id: null, title: defaultTitle });
-  const [visible, setVisible] = useState<any>(false);
-  const [options, setOptions] = useState([{ key: null, title: '' }])
-  const openMenu = () => setVisible(true);
-  const closeMenu = () => setVisible(false);
+const Select: FC<SelectProps> = ({ items, label, onSelect }) => {
 
-  useEffect(() => setOptions(items), [items])
-
-  function getMenuItems(): any {
-    const optionsComponent: any[] = [];
-    options?.forEach(
-      (option) => {
-        optionsComponent.push(
-          <Menu.Item
-            style={style.menu}
-            key={option.key}
-            title={option.title}
-            onPress={() => { select(option); returnValue(option.key); closeMenu() }}
-          />
-        )
-      })
-    return optionsComponent
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedLabel, setSelected] = useState(label)
+  
+  const afterSelect = (item: any) => {
+    onSelect(item);
+    setSelected(item.title);
+    setModalVisible(!modalVisible);
   }
 
   return (
-
-    <View style={style.container}>
-      <Text style={style.selectLabel}>{label}</Text>
-      <Menu
-        visible={visible}
-        onDismiss={closeMenu}
-        anchor={
-          <View style={style.anchor}>
-            <IconButton style={style.icon} icon="chevron-down"></IconButton>
-            <Button
-              labelStyle={style.label}
-              style={style.field}
-              onPress={openMenu}>
-              {selected.title}
-            </Button>
-          </ View>
-        }
-      >
-        {getMenuItems()}
-      </Menu>
-    </View >
+    <View>
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        onDismiss={()=> console.log('out')}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={style.backwardModal}>
+          <View style={style.modal}>
+            <FlatList
+              data={items}
+              renderItem={({ item }) => <Item title={item.title} onPress={()=> {afterSelect(item)}}/>}
+              keyExtractor={item => item.key}
+            />
+          </View>
+        </View>
+      </Modal>
+      <Pressable
+        style={style.buttonSelect}
+        onPress={() => setModalVisible(true)}>
+        <Text style={style.label}>{selectedLabel}</Text>
+        <View style={style.icon}>
+        <Icon size={35} source="chevron-down" />
+        </View>
+      </Pressable>
+    </View>
   )
 }
 
 const style = StyleSheet.create({
-  container: {
+  buttonSelect: {
+    borderRadius: 15,
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: "center",
-  },
-  selectLabel: {
-    fontWeight: "bold",
-    marginBottom: 10
-  },
-  anchor: {
-    flexDirection: "row"
-  },
-  icon: {
-    position: "absolute",
-    width: 180,
-    alignItems: "flex-end",
-    marginLeft: -15
+    borderWidth: 0.5,
+    width: "50%"
   },
 
-  menu: {
-    width: 180
+  backwardModal: {
+    height: "100%",
+    backgroundColor: "#cfcfcf6e",
+    justifyContent: "center",
+    alignItems: "center"
   },
-  field: {
-    width: 180,
-    borderWidth: 2,
-    borderRadius: 20,
-    borderColor: MD3Colors.neutral70,
+  modal: {
+    maxHeight: "40%",
+    width: "80%",
+    backgroundColor: "#ecf0f3",
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   label: {
+    flex: 1,
     fontWeight: "bold",
-    textAlign: "left",
+    textAlign: "center",
     textAlignVertical: "center",
-    height: 30,
+    height: 55,
   },
+  icon: {
+    borderLeftWidth: 0.4
+  },
+  item: {
+    borderBottomColor: "#7575756e",
+    borderBottomWidth: 0.5
+  }
 })
 
 export default Select
