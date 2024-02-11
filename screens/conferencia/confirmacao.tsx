@@ -58,9 +58,8 @@ const Confirmacao: FC<any> = (props) => {
         <View style={style.selectEstado}>
           <Select
             items={estados}
-            label="*Estado do material:"
-            defaultTitle="estado..."
-            returnValue={(estadoId: string | null) => setEstadoId(estadoId)}
+            label="*Estado do material"
+            onSelect={(estadoId: string | null) => setEstadoId(estadoId)}
           />
         </View>
         <View style={style.bottonBar}>
@@ -93,6 +92,7 @@ const style: any = StyleSheet.create({
     display: "flex"
   },
   selectEstado: {
+    alignItems: "center"
   },
   bottonBar: {
     marginTop: 30,
