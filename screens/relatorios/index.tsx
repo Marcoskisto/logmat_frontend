@@ -12,9 +12,6 @@ const Relatorios: FC<NavigationProps> = ({ navigation }) => {
       case Resource.CONFERIDOS:
         return <Relacao jumpTo={data.jumpTo} tipo={data.route.key} />;
 
-      case Resource.ENCONTRADOS:
-        return <Relacao jumpTo={data.jumpTo} tipo={data.route.key} />;
-
       case Resource.NAO_ENCONTRADOS:
         return <Relacao jumpTo={data.jumpTo} tipo={data.route.key} />;
     }
@@ -24,7 +21,6 @@ const Relatorios: FC<NavigationProps> = ({ navigation }) => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: Resource.CONFERIDOS, title: 'Conferidos' },
-    { key: Resource.ENCONTRADOS, title: 'Encontrados' },
     { key: Resource.NAO_ENCONTRADOS, title: 'Pendentes' },
     
   ]);

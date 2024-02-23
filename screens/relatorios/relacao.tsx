@@ -49,6 +49,7 @@ const Relacao: FC<any> = ({ tipo }) => {
             id={material.id}
             bmp={material.n_bmp}
             nomenclatura={material.nomenclatura}
+            isPending={!item.is_owner && tipo !== Resource.NAO_ENCONTRADOS}
           />
         )
       }

@@ -14,7 +14,6 @@ const Stack = createNativeStackNavigator();
 const IniciaConferencia: FC<NavigationProps> = ({ route, navigation }) => {
 
   const [items, setItems] = useState<any>();
-  const [setorId, setSetorId] = useState<string | null>(null)
   const [setor, setSetor] = useState<any>(null)
   const [bmp, setBmp] = useState<string | null>(null)
   const [scanner, showScanner] = useState<boolean>(false)
@@ -50,14 +49,14 @@ const IniciaConferencia: FC<NavigationProps> = ({ route, navigation }) => {
         <Select
           items={items}
           label="localização..."
-          onSelect={(setorId: string | null) => setSetorId(setorId)}
+          onSelect={(setor: string | null) => setSetor(setor)}
         />
         <Button contentStyle={{ height: 50 }}
           style={style.buttonContinua}
           mode="contained"
           icon="check"
           onPress={() => switchModal()}
-          disabled={setorId == null} >
+          disabled={setor == null} >
           Continuar
         </Button >
       </View>
@@ -71,7 +70,7 @@ const IniciaConferencia: FC<NavigationProps> = ({ route, navigation }) => {
       <Modal visible={confirmacao}>
         <Confirmacao
           onConfirmEnd={() => closeModals()}
-          localId={setorId}
+          setor={setor}
           bmp={bmp}
         />
       </Modal>
