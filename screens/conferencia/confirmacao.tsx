@@ -9,7 +9,7 @@ import BmpCard from "./bmpCard";
 const Confirmacao: FC<any> = (props) => {
   const [material, setMaterial] = useState<any>();
 
-  const [setorId] = useState(props.localId)
+  const [setorId] = useState(props.setor.key)
   const [estadoId, setEstadoId] = useState<string | null>(null)
 
   const estados: Item[] = [
@@ -25,6 +25,7 @@ const Confirmacao: FC<any> = (props) => {
       estado: estadoId,
       observacao: "n/a"
     }
+    console.log(conferencia)
 
     axios.post(Resource.CONFERENCIA, conferencia)
       .then(
@@ -59,7 +60,7 @@ const Confirmacao: FC<any> = (props) => {
           <Select
             items={estados}
             label="*Estado do material"
-            onSelect={(estadoId: string | null) => setEstadoId(estadoId)}
+            onSelect={(estado: any) => setEstadoId(estado.key)}
           />
         </View>
         <View style={style.bottonBar}>
