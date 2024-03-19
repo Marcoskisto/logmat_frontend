@@ -38,5 +38,12 @@ export function createSetorItems(receivedItems: Setor[]): Item[] {
   return items
 }
 
-
+export function retrieveSetor() {
+  return AsyncStorage.getItem('session').then(
+    (result) => {
+      const session = JSON.parse(result!)
+      return session.setor.sigla
+    }
+  )
+}
 

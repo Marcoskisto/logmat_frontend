@@ -7,7 +7,8 @@ export enum Resource {
   CONFERIDOS = '/conferidos/',
   ENCONTRADOS = '/encontrados/',
   NAO_ENCONTRADOS = '/nao-encontrados/',
-  SETOR = '/setor/'
+  SETOR = '/setor/',
+  PANEL = '/panel/'
 }
 
 axios.defaults.baseURL = 'http://192.168.15.62:8000';
