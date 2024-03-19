@@ -5,6 +5,7 @@ import { ScrollView } from "react-native";
 import axios from "axios";
 import { Resource } from "../../httpService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { retrieveSetor } from "../../components/utils";
 
 const Relacao: FC<any> = ({ tipo }) => {
   const [items, setItems] = useState<any>([]);
@@ -15,11 +16,6 @@ const Relacao: FC<any> = ({ tipo }) => {
   const [numberOfItemsPerPage, onItemsPerPageChange] = React.useState(numberOfItemsPerPageList[0]);
   const [setor, setSetor] = useState();
 
-  const retrieveSetor = async () => {
-    const result = await AsyncStorage.getItem('session')
-    const session = JSON.parse(result!)
-    return session.setor.sigla
-  }
 
   useEffect(() => {
     retrieveSetor()
