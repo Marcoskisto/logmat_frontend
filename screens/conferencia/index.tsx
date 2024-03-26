@@ -15,65 +15,35 @@ const IniciaConferencia: FC<NavigationProps> = ({ route, navigation }) => {
 
   const [items, setItems] = useState<any>();
   const [setor, setSetor] = useState<any>(null)
-  const [bmp, setBmp] = useState<string | null>(null)
-  const [scanner, showScanner] = useState<boolean>(false)
-  const [confirmacao, showConfirmacao] = useState<boolean>(false)
 
   useEffect(() => {
     axios.get(Resource.SETOR)
       .then((response: any) => response.data.results)
       .then((setores) => createSetorItems(setores))
-      .then((items) => {setItems(items); console.log(items)})
-      .catch((error) => console.error(error))}, []);
-
-  function switchModal() {
-    const shift: boolean = scanner
-    showScanner(!shift);
-    showConfirmacao(shift);
-  }
-
-  function closeModals() {
-    showScanner(false);
-    showConfirmacao(false);
-  }
-
-  function startConferencia(bmp: string) {
-    setBmp(bmp);
-    switchModal();
-  }
+      .then((items) => { setItems(items) })
+      .catch((error) => console.error(error))
+  }, []);
 
   return (
     <>
       <View style={style.content}>
         <Text style={style.title}>Em que local você está?</Text>
-        <Select
-          items={items}
-          label="localização..."
-          onSelect={(setor: string | null) => setSetor(setor)}
-        />
+        <View>
+          <Select
+            items={items}
+            label="localização..."
+            onSelect={(setor: string | null) => setSetor(setor)}
+          />
+        </View>
         <Button contentStyle={{ height: 50 }}
           style={style.buttonContinua}
           mode="contained"
           icon="check"
-          onPress={() => switchModal()}
+          onPress={() => navigation.navigate('ScanScreen', { sector: setor })}
           disabled={setor == null} >
           Continuar
         </Button >
       </View>
-      <Modal visible={scanner}>
-        <ScanScreen
-          onScan={(bmp: string) => { startConferencia(bmp) }}
-          onPressClose={() => closeModals()}
-        />
-      </Modal>
-
-      <Modal visible={confirmacao}>
-        <Confirmacao
-          onConfirmEnd={() => closeModals()}
-          setor={setor}
-          bmp={bmp}
-        />
-      </Modal>
     </>
   )
 }
@@ -94,7 +64,7 @@ const style: any = StyleSheet.create({
   buttonContinua: {
     marginVertical: 30,
     width: "40%"
-  }
+  },
 })
 
 export default IniciaConferencia;

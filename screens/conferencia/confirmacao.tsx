@@ -2,14 +2,14 @@ import React, { useState, useEffect, FC } from "react";
 import axios from "axios";
 import { Resource } from "../../httpService";
 import { View, StyleSheet, Alert, ScrollView } from "react-native";
-import { FAB, PaperProvider, Text } from "react-native-paper";
+import { FAB, PaperProvider } from "react-native-paper";
 import Select, { Item } from "../../components/select";
 import BmpCard from "./bmpCard";
 
-const Confirmacao: FC<any> = (props) => {
+const Confirmacao: FC<any> = ({ route, navigation }) => {
+  const bmp: any = route.params.bmp
   const [material, setMaterial] = useState<any>();
-
-  const [setorId] = useState(props.setor.key)
+  const [setorId] = useState(route.params.sector.key)
   const [estadoId, setEstadoId] = useState<string | null>(null)
 
   const estados: Item[] = [
@@ -25,12 +25,11 @@ const Confirmacao: FC<any> = (props) => {
       estado: estadoId,
       observacao: "n/a"
     }
-    console.log(conferencia)
 
     axios.post(Resource.CONFERENCIA, conferencia)
       .then(
         (response) => {
-          response.status == 201 ? props.onConfirmEnd() : Alert.alert('Erro', 'Erro ao processar.')
+          navigation.navigate('Conferencia')
         })
       .catch((error) => console.error(error));
   }
@@ -38,14 +37,13 @@ const Confirmacao: FC<any> = (props) => {
   function updateMaterial(material: any) {
     if (typeof material == 'undefined') {
       Alert.alert('Erro', 'Material não encontrado');
-      props.onConfirmEnd();
     } else {
       setMaterial(material)
     }
   }
 
   useEffect(() => {
-    axios.get(Resource.MATERIAL, { params: { n_bmp: props.bmp } })
+    axios.get(Resource.MATERIAL, { params: { n_bmp: bmp } })
       .then((response: any) => response.data.results[0])
       .then((material) => updateMaterial(material))
       .catch((error) => console.error(error))
@@ -56,31 +54,23 @@ const Confirmacao: FC<any> = (props) => {
 
       <ScrollView style={style.container}>
         <BmpCard material={material} key={material?.id} />
-        <View style={style.selectEstado}>
-          <Select
-            items={estados}
-            label="*Estado do material"
-            onSelect={(estado: any) => setEstadoId(estado.key)}
-          />
-        </View>
-        <View style={style.bottonBar}>
-          <FAB
-            style={style.cancelButton}
-            icon="close"
-            label=""
-            mode="flat"
-            onPress={() => { props.onConfirmEnd() }}
-          />
-          <FAB
-            style={style.buttonAvancar}
-            icon="check"
-            label="CONFIRMA"
-            mode="flat"
-            onPress={() => pushConferencia()}
-            disabled={setorId == null || estadoId == null}
-          />
-        </View>
       </ScrollView >
+      <View style={style.select}>
+        <Select
+          items={estados}
+          label="*Estado do material"
+          onSelect={(estado: any) => setEstadoId(estado.key)}
+        />
+      </View>
+      <View style={style.bottonBar}>
+        <FAB
+          icon="check"
+          label="CONFIRMA"
+          mode="flat"
+          onPress={() => pushConferencia()}
+          disabled={setorId == null || estadoId == null}
+        />
+      </View>
     </PaperProvider>
   )
 }
@@ -89,26 +79,17 @@ const style: any = StyleSheet.create({
   container: {
     height: "100%"
   },
-  coverContainer: {
-    display: "flex"
+  select: {
+    alignSelf: "center",
   },
-  selectEstado: {
-    alignItems: "center"
-  },
+
   bottonBar: {
-    marginTop: 30,
+    alignSelf: "center",
+    marginTop: 10,
     marginHorizontal: 20,
     marginBottom: 10,
-    flexDirection: "row"
   },
-  buttonAvancar: {
-    position: "absolute",
-    right: 0,
-    alignSelf: "flex-end",
-  },
-  cancelButton: {
-    alignSelf: "flex-start"
-  },
+
 })
 
 export default Confirmacao

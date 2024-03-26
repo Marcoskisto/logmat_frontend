@@ -1,8 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
+import { useIsFocused } from "@react-navigation/native";
 
-import { StyleSheet } from "react-native";
-import { View } from "react-native";
-import { Icon, Text, TouchableRipple } from "react-native-paper";
 import Card from "./card";
 import { retrieveSetor } from "../../../components/utils";
 import axios from "axios";
@@ -12,15 +10,18 @@ const Panel: FC<any> = ({ navigation }) => {
 
   const [percentageChecked, setPercentage] = useState<any>(0);
   const [totalItems, setTotalItems] = useState<any>(0);
+  const isFocused = useIsFocused()
 
   useEffect(() => {
-    retrieveSetor()
-      .then(sector => axios.get(Resource.PANEL+sector))
-      .then(result => {
-        setPercentage(result.data.percentage_checked);
-        setTotalItems(result.data.material_qty);
-      })
-  }, [])
+    if(isFocused){
+      retrieveSetor()
+        .then(sector => axios.get(Resource.PANEL+sector))
+        .then(result => {
+          setPercentage(result.data.percentage_checked);
+          setTotalItems(result.data.material_qty);
+        })
+    }
+  }, [isFocused])
 
   const relatorio = {
     navigate: () => navigation.navigate('Relatorios'),
