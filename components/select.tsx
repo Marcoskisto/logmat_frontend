@@ -68,7 +68,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: "center",
     borderWidth: 0.5,
-    width: "50%"
+    width: "100%"
   },
 
   backwardModal: {

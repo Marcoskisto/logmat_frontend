@@ -4,7 +4,7 @@
 
 1. Node 21.6.1
 1. npm 10.2.4
-1. openjdk 11.0.21
+1. openjdk 17.0.2
 1. Android Studio:
 
 |  SDK Platforms | SDK Tools |

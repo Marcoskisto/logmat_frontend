@@ -21,6 +21,7 @@ import ScanScreen from './screens/scanner';
 import ListaBmp from './screens/listaBmp';
 import Relatorios from './screens/relatorios';
 import Conferencia from './screens/conferencia';
+import Confirmacao from './screens/conferencia/confirmacao';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,8 +31,9 @@ function App(): JSX.Element {
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" options={{headerShown: false}} component={Login} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-        <Stack.Screen name="ScanScreen" component={ScanScreen} />
         <Stack.Screen name="Conferencia" component={Conferencia} />
+        <Stack.Screen name="ScanScreen" component={ScanScreen} />
+        <Stack.Screen name="Confirmacao" component={Confirmacao} />
         <Stack.Screen name="ListaBmp" component={ListaBmp} />
         <Stack.Screen name="Relatorios" component={Relatorios} />
       </Stack.Navigator>

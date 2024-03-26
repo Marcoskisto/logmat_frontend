@@ -1,39 +1,48 @@
 
-import React, { FC } from 'react';
+import { useIsFocused } from '@react-navigation/native';
+import React, { FC, useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Camera, CameraDevice, CodeScanner, useCameraDevice } from 'react-native-vision-camera';
 
-import {
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+const ScanScreen: FC<any> = ({ route, navigation }) => {
+  const isFocused = useIsFocused()
 
-import QRCodeScanner from 'react-native-qrcode-scanner';
-import { RNCamera } from 'react-native-camera';
-import { FAB } from 'react-native-paper';
+  const sector: any = route.params.sector
+  const device: CameraDevice | undefined = useCameraDevice('back')
+  const [isActive, activate] = useState(true)
 
-const ScanScreen: FC<any> = (props: any) => {
+  const codeScanner: CodeScanner = {
+    codeTypes: ['qr', 'ean-13'],
+    onCodeScanned: (codes) => {
+      activate(false)
+      if(isFocused){
+        navigation.push('Confirmacao', { sector: sector, bmp: codes[0].value })
+        console.log(codes[0].value)
+      }
+    }
+  }
 
-  const onSuccess = (e: any) => props.onScan(e.data);
+  useEffect(() => {
+    if (device) {
+      Camera.requestCameraPermission()
+        .then(result => {
+          console.log('requestCameraPermission: ', Camera.getCameraPermissionStatus());
+        })
+        .catch(err => {
+          console.log('requestCameraPermission Err: ', err);
+        });
+    }
+  }, [device]);
+
+  if (device == null || Camera.getCameraPermissionStatus() != 'granted') return <View></View>
   return (
-    <View style={styles.scan}>
-      <QRCodeScanner
-        showMarker={true}
-        vibrate={true}
-        onRead={onSuccess}
-        flashMode={RNCamera.Constants.FlashMode.off}
-        topContent={
-          <View style={styles.topContent}>
-            <Text style={styles.centerText}>
-              Aponte para uma etiqueta de BMP
-            </Text>
-          </View>
-        }
-      />
-    <FAB 
-      onPress={() => props.onPressClose()}
-      style={styles.cancelButton} 
-      icon="close"/>
-    </View>
+    <Camera
+      style={StyleSheet.absoluteFill}
+      device={device}
+      isActive={isActive && isFocused}
+      codeScanner={codeScanner}
+      onError={(error) => console.log(error)}
+    />
   );
 }
 
@@ -41,26 +50,6 @@ const styles = StyleSheet.create({
   scan: {
     height: "100%"
   },
-  cancelButton: {
-    position: 'absolute',
-    bottom: 15,
-    left: 15,
-  },
-  topContent: {
-    height: "100%"
-  },
-  centerText: {
-    fontSize: 18,
-    color: '#777',
-    fontWeight: '500',
-  },
-  buttonText: {
-    fontSize: 21,
-    color: 'rgb(0,122,255)'
-  },
-  buttonTouchable: {
-    padding: 16
-  }
 });
 
 export default ScanScreen
