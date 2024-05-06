@@ -31,7 +31,7 @@ const Panel: FC<any> = ({ navigation }) => {
   }
 
   const lista = {
-    navigate: () => navigation.navigate('ListaBmp'),
+    navigate: () => navigation.navigate('Lista'),
     icon: 'clipboard-list-outline',
     name: 'Carga',
     detail: totalItems+' itens'
