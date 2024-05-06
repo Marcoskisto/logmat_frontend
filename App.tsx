@@ -34,7 +34,7 @@ function App(): JSX.Element {
         <Stack.Screen name="Conferencia" component={Conferencia} />
         <Stack.Screen name="ScanScreen" component={ScanScreen} />
         <Stack.Screen name="Confirmacao" component={Confirmacao} />
-        <Stack.Screen name="ListaBmp" component={ListaBmp} />
+        <Stack.Screen name="Lista" component={ListaBmp} />
         <Stack.Screen name="Relatorios" component={Relatorios} />
       </Stack.Navigator>
       <StatusBar />

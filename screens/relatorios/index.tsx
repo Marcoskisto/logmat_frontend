@@ -1,19 +1,21 @@
 import React, { FC } from 'react';
-import { View, useWindowDimensions } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { NavigationProps } from '../../components/utils';
-import Relacao from './relacao';
 import { Resource } from '../../httpService';
+import RelacaoMaterial from './relacao_material';
+import RelacaoConferido from './relacao_conferido';
 
 const Relatorios: FC<NavigationProps> = ({ navigation }) => {
 
+  
   const renderScene = (data: any) => {
     switch (data.route.key) {
       case Resource.CONFERIDOS:
-        return <Relacao jumpTo={data.jumpTo} tipo={data.route.key} />;
+        return <RelacaoConferido tipo={data.route.key} />;
 
       case Resource.NAO_ENCONTRADOS:
-        return <Relacao jumpTo={data.jumpTo} tipo={data.route.key} />;
+        return <RelacaoMaterial tipo={data.route.key} />;
     }
   };
   const layout = useWindowDimensions();
