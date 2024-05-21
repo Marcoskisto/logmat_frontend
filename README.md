@@ -1,4 +1,6 @@
 # LogMat Mobile
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FMarcoskisto%2Flogmat_frontend.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FMarcoskisto%2Flogmat_frontend?ref=badge_shield)
+
 
 ## Pre-requisitos
 
@@ -13,3 +15,7 @@
 |   | Android SDK Command-line Tools 10.0 |
 |   | Android Emulator 33.1.24 |
 |   | Android SDK Platform Tools 34.0.5 |
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FMarcoskisto%2Flogmat_frontend.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FMarcoskisto%2Flogmat_frontend?ref=badge_large)
