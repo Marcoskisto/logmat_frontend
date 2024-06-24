@@ -22,13 +22,17 @@ import ListaBmp from './screens/listaBmp';
 import Relatorios from './screens/relatorios';
 import Conferencia from './screens/conferencia';
 import Confirmacao from './screens/conferencia/confirmacao';
+import { Card } from 'react-native-paper';
+import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import { faBlackTie } from '@fortawesome/free-brands-svg-icons';
 
 const Stack = createNativeStackNavigator();
 
 function App(): JSX.Element {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator
+        initialRouteName="Login">
         <Stack.Screen name="Login" options={{headerShown: false}} component={Login} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
         <Stack.Screen name="Conferencia" component={Conferencia} />

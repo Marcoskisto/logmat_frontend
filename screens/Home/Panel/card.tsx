@@ -32,10 +32,10 @@ const Card: FC<any> = ({ navigate, icon, name, detail }) => {
 
 const style = StyleSheet.create({
   menuCardWrap: {
-    borderRadius: 30,
+    borderRadius: 45,
     margin: 10,
-    height: 100,
-    backgroundColor: '#cff566a3'
+    height: 110,
+    backgroundColor: '#40A0AB',
   },
   cardArea: {
     flexDirection: "row",

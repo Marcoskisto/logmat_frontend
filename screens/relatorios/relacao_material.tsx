@@ -4,25 +4,39 @@ import { FlatList, StyleSheet, Text } from "react-native";
 import axios from "axios";
 import { retrieveSetor } from "../../components/utils";
 
-const RelacaoMaterial: FC<any> = ({ tipo }) => {
+const RelacaoMaterial: FC<any> = ({ tipo, allSectors, searchQuery }) => {
   const [items, setItems] = useState<any>([]);
-  const [page, setPage] = useState(0);
-  const [setor, setSetor] = useState()
+  const [page, setPage] = useState(1);
+  const [showAllSectors, setShowAllSectors] = useState(false)
+  const [searchCriteria, setCriteria] = useState(null)
+
+  useEffect(() => {
+    if (allSectors != showAllSectors) {
+      setItems([]);
+      setShowAllSectors(allSectors);
+      setPage(1);
+    }
+    if (searchQuery != searchCriteria) {
+      setItems([]);
+      setCriteria(searchQuery);
+    }
+  }, [allSectors, searchQuery])
 
   useEffect(() => {
     retrieveSetor()
+      .then(sector => showAllSectors ? null : sector)
       .then(
-        setor => {
-          const params = { page: page + 1, setor_sigla: setor }
+        sector => {
+          const params = { page: page, setor__sigla: sector, search: searchCriteria };
           axios.get(tipo, { params })
             .then((resp) => resp.data)
-            .then((data) => {setItems([...items, ...data.results])})
+            .then((data) => { setItems([...items, ...data.results]) })
             .catch((error) => console.info("No more items on server"))
         })
-  }, [page]);
+  }, [page, showAllSectors, searchCriteria]);
 
   function renderItem(item: any): any {
-    const setor = item.setor == undefined? "": " - "+ item.setor.sigla
+    const setor = item.setor == undefined ? "" : " - " + item.setor.sigla
     return <>
       <Card style={style.marginCard}>
         <Card.Content>
@@ -40,15 +54,15 @@ const RelacaoMaterial: FC<any> = ({ tipo }) => {
       data={items}
       renderItem={({ item }) => renderItem(item)}
       keyExtractor={items.id}
-      onEndReached={() => setPage(page+1)}
+      onEndReached={() => setPage(page + 1)}
     />
   );
 };
 
 const style = StyleSheet.create({
   marginCard: {
-    marginVertical: 5,
-    marginHorizontal: 7
+    marginVertical: 6,
+    marginHorizontal: 10
   },
   title: {
     fontWeight: "bold"

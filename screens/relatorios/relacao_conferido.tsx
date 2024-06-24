@@ -49,8 +49,8 @@ const RelacaoConferido: FC<any> = ({ tipo }) => {
 
 const style = StyleSheet.create({
   marginCard: {
-    marginVertical: 5,
-    marginHorizontal: 7
+    marginVertical: 6,
+    marginHorizontal: 10
   },
   title: {
     fontWeight: "bold",

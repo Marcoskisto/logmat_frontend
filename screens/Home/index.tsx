@@ -28,7 +28,7 @@ const style = StyleSheet.create({
 
   header: {
     height: "10%",
-    marginVertical: 5
+    marginVertical: 10
   },
 
   body: {

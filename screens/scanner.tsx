@@ -34,6 +34,15 @@ const ScanScreen: FC<any> = ({ route, navigation }) => {
     }
   }, [device]);
 
+  useEffect(() => {
+    // Atualiza isActive com base no foco da tela
+    if (isFocused) {
+      activate(true);
+    } else {
+      activate(false);
+    }
+  }, [isFocused]);
+
   if (device == null || Camera.getCameraPermissionStatus() != 'granted') return <View></View>
   return (
     <Camera

@@ -1,8 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { StyleSheet, View, Text, Image, Dimensions } from "react-native";
-import logo from "../assets/images/fab-logo.png"
+import logo from "../assets/images/logo.png"
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, FC } from "react";
-import { StyleSheet, View, Text, Switch } from "react-native";
+import { StyleSheet, View, Text, Switch, GestureResponderEvent, NativeSyntheticEvent, EnterKeyHintType, TextInputKeyPressEventData, TextInputFocusEventData } from "react-native";
 
 import { NavigationProps } from "../components/utils";
 import RelacaoMaterial from "./relatorios/relacao_material";
@@ -8,26 +8,31 @@ import { Searchbar } from "react-native-paper";
 
 
 const ListaBmp: FC<NavigationProps> = ({ navigation }) => {
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const [searchValue, setSearchValue] = React.useState('');
+  const [searchQuery, setSearchQuery] = React.useState('')
+  const [allSectors, setAllSectors] = useState(false);
+  const toggleSwitch = () => setAllSectors(previousState => !previousState);
 
 
   return (
     <>
-      <RelacaoMaterial tipo={Resource.MATERIAL} />
+      <RelacaoMaterial tipo={Resource.LISTA_MATERIAIS} allSectors={allSectors} searchQuery={searchQuery} />
       <View style={style.searchBar}>
         <View style={style.searchOption}>
           <Switch
             onValueChange={toggleSwitch}
-            value={isEnabled}
+            value={allSectors}
           />
           <Text>Todos Setores</Text>
         </View>
         <Searchbar
           placeholder="Search"
-          onChangeText={setSearchQuery}
-          value={searchQuery}
+          onChangeText={setSearchValue}
+          value={searchValue}
+          onIconPress={(e: GestureResponderEvent) => setSearchQuery(searchValue)}
+          onTraileringIconPress={(e: GestureResponderEvent) => setSearchQuery(searchValue)}
+          onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {setSearchQuery(searchValue)}}
+          onClearIconPress={(e: GestureResponderEvent) => setSearchQuery('')}
         />
       </View>
     </>
